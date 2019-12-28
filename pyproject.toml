@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "scrapyu"
+version = "0.1.0"
+description = "Scrapy utils"
+authors = [
+    "lin-zone <z_one10@163.com>",
+]
+license = "MIT license"
+readme = "README.md"
+repository = "https://github.com/lin-zone/scrapyu"
+keywords = ["packaging", "dependency", "poetry", "setuptools", "pip"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+autopep8 = "*"
+jinja2 = "*"
+poetry = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
+
+[tool.poetry.scripts]
+poetry-setup = "poetry_setup.core:main"
