@@ -5,3 +5,4 @@ pytest-cov==2.8.1
 fake-useragent==0.1.11
 html2text==2019.9.26
 path-py==12.4.0
+selenium==3.141.0

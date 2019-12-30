@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrapyu"
-version = "0.1.3"
+version = "0.1.4"
 description = "Scrapy utils"
 authors = [
     "lin-zone <z_one10@163.com>",
@@ -28,6 +28,7 @@ pytest-cov = "^2.8"
 fake-useragent = "0.1.11"
 html2text = "2019.9.26"
 path-py = "12.4.0"
+selenium = "3.141.0"
 
 [tool.poetry.dev-dependencies]
 scrapy = "*"
@@ -36,3 +37,4 @@ pytest-cov = "*"
 fake-useragent = "*"
 html2text = "*"
 path-py = "*"
+selenium = "*"
