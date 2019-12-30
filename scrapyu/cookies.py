@@ -10,8 +10,11 @@ class FirefoxCookiesMiddleware(object):
     Chrome浏览器的headless模式好像出了点问题, 就用Firefox浏览器好了
     """
 
-    def open_spider(self, spider):
-        self.executable_path = spider.settings.get('GECKODRIVER_PATH', 'geckodriver')
+    @classmethod
+    def from_crawler(cls, crawler):
+        cls.executable_path = crawler.settings.get('GECKODRIVER_PATH', 'geckodriver')
+        return cls()
 
     def process_request(self, request, spider):
+        
         request.cookies = get_firefox_cookies(request.url, executable_path=self.executable_path)
