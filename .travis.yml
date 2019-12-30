@@ -1,6 +1,5 @@
 sudo: false
 language: python
-require: selenium-webdriver
 
 matrix:
     include:
