@@ -9,6 +9,17 @@ license = "MIT license"
 readme = "README.md"
 repository = "https://github.com/lin-zone/scrapyu"
 keywords = ["scrapy", "pipelines", "middlewares", "utils"]
+classifiers = [
+    "Framework :: Scrapy",
+    "Topic :: Utilities",
+    "Topic :: Internet :: WWW/HTTP",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Chinese (Simplified)",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"
