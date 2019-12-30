@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrapyu"
-version = "0.1.1"
+version = "0.1.2"
 description = "Scrapy utils"
 authors = [
     "lin-zone <z_one10@163.com>",
@@ -23,7 +23,12 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
+scrapy = "^1.8"
+pytest-cov = "^2.8"
+fake-useragent = "0.1.11"
 
 [tool.poetry.dev-dependencies]
+scrapy = "*"
 pytest = "*"
 pytest-cov = "*"
+fake-useragent = "*"
