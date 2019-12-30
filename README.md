@@ -7,25 +7,40 @@
 [![GitHub stars](https://img.shields.io/github/stars/lin-zone/scrapyu?logo=github)](https://github.com/lin-zone/scrapyu)
 [![GitHub forks](https://img.shields.io/github/forks/lin-zone/scrapyu?logo=github)](https://github.com/lin-zone/scrapyu)
 
-## `UserAgentMiddleware`
+## UserAgentMiddleware
 
 ```python
 # settings.py
 USERAGENT_TYPE = 'firefox'
+DOWNLOADER_MIDDLEWARES = {
+   'scrapyu.UserAgentMiddleware': 543,
+}
 ```
 
-## `MarkdownPipeline`
+## MarkdownPipeline
 
 ```python
 # settings.py
 MARKDOWNS_STORE = 'news'
+ITEM_PIPELINES = {
+    'scrapyu.MarkdownPipeline': 300,
+}
 ```
 
 ```python
 # items.py
 import scrapy
 
-class MdItem(scrapy.Item):
+class MarkdownItem(scrapy.Item):
     html = scrapy.Field()
     filename = scrapy.Field()
+```
+
+## FirefoxCookiesMiddleware
+
+```python
+# settings.py
+DOWNLOADER_MIDDLEWARES = {
+   'scrapyu.FirefoxCookiesMiddleware': 543,
+}
 ```
