@@ -40,6 +40,7 @@ class MarkdownItem(scrapy.Item):
 
 ```python
 # settings.py
+GECKODRIVER_PATH = 'geckodriver'
 DOWNLOADER_MIDDLEWARES = {
    'scrapyu.FirefoxCookiesMiddleware': 543,
 }

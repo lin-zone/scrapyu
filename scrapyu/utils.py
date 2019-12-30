@@ -17,11 +17,11 @@ def get_domain(url):
 _cookies = dict()
 
 
-def _get_firefox_cookies(url):
+def _get_firefox_cookies(url, **kwargs):
     options = webdriver.FirefoxOptions()
-    options.add_argument('--headless')                  # 启动无头模式
-    browser = webdriver.Firefox(options=options)
-    browser.set_page_load_timeout(30)
+    options.add_argument('--headless')
+    browser = webdriver.Firefox(options=options, **kwargs)
+    browser.set_page_load_timeout(60)
     browser.get(url)
     cookies = browser.get_cookies()
     browser.quit()
@@ -32,11 +32,11 @@ def _raw_cookies_to_scrapy_cookies(cookies):
     return {c['name']: c['value'] for c in cookies}
 
 
-def get_firefox_cookies(url, convert_scrapy_cookies=True):
+def get_firefox_cookies(url, convert_scrapy_cookies=True, **kwargs):
     base_url = get_base_url(url)
     key = (base_url, convert_scrapy_cookies)
     if key not in _cookies:
-        cookies = _get_firefox_cookies(base_url)
+        cookies = _get_firefox_cookies(base_url, **kwargs)
         if convert_scrapy_cookies:
             cookies = _raw_cookies_to_scrapy_cookies(cookies)
         _cookies[key] = cookies
