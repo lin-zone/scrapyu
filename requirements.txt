@@ -3,3 +3,5 @@ tox==3.14.2
 scrapy==1.8.0
 pytest-cov==2.8.1
 fake-useragent==0.1.11
+html2text==2019.9.26
+path-py==12.4.0
