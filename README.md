@@ -49,6 +49,7 @@ DOWNLOADER_MIDDLEWARES = {
 ## MongoDBPipeline
 
 ```python
+# settings.py
 MONGODB_URI = 'mongodb://localhost:27017'
 # or
 # MONGODB_HOST = 'localhost'
@@ -62,4 +63,16 @@ MONGODB_UNIQUE_KEY = 'title name'
 ITEM_PIPELINES = {
     'scrapyu.MongoDBPipeline': 300,
 }
+```
+
+## RedisDupeFilter
+
+```python
+# settings.py
+DUPEFILTER_CLASS = 'scrapyu.RedisDupeFilter'
+REDIS_DUPE_HOST = 'localhost'
+REDIS_DUPE_PORT = 6379
+REDIS_DUPE_DATABASE = 0
+REDIS_DUPE_PASSWORD = 'password'
+REDIS_DUPE_KEY = 'requests'
 ```
