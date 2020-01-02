@@ -28,13 +28,13 @@ class MongoDBPipeline(object):
         unique_key = self.config['unique_key']
         item_dict = dict(item)
         if unique_key is None:
-            self.collection.insert(item_dict)
+            self.collection.insert_one(item_dict)
         else:
             spec = {}
             try:
                 for k in unique_key:
                     spec[k] = item[k]
-                self.collection.update(spec, item_dict, upsert=True)
+                self.collection.update_one(spec, {'$set': item_dict}, upsert=True)
             except KeyError as e:
                 msg = f"unique_key defined error, item has no {str(e)} field"
                 spider.crawler.engine.close_spider(spider, msg)
