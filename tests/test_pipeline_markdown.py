@@ -2,17 +2,15 @@ import os
 from tempfile import TemporaryDirectory
 
 import html2text
+from path import Path
 from scrapy.spiders import Spider
 from scrapy.utils.test import get_crawler
 
 from scrapyu import MarkdownPipeline
 
 
-with open('normal.html') as f:
-    html = f.read()
-
-with open('normal.md') as f:
-    text = f.read()
+html = Path('normal.html').read_text()
+text = Path('normal.md').read_text()
     
 
 def test_html2text():
@@ -26,12 +24,10 @@ def test_markdown_pipeline():
     item['html'] = html
     item['filename'] = filename = 'normal'
     tempdir = TemporaryDirectory().name
-    tempfile = os.path.join(tempdir, filename) + '.md'
     crawler = get_crawler(Spider, settings_dict=dict(MARKDOWNS_STORE=tempdir))
     spider = crawler._create_spider('foo')
     pipe = MarkdownPipeline()
     pipe.open_spider(spider)
     pipe.process_item(item, spider)
-    with open(tempfile) as f:
-        result = f.read()
+    result = (Path(tempdir) / '{}.md'.format(filename)).read_text()
     assert text == result
