@@ -10,7 +10,7 @@ class RedisDupeFilter(BaseDupeFilter):
     def __init__(self, host, port, db, password, key):
         self.redis = Redis(host, port, db, password)
         self.key = key
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('scrapyu.RedisDupeFilter')
 
     @classmethod
     def from_settings(cls, settings):
