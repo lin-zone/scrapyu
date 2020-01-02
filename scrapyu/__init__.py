@@ -1,8 +1,8 @@
 __version__ = '0.1.7'
 
 
-from .useragent import UserAgentMiddleware
-from .markdown import MarkdownPipeline
-from .cookies import FirefoxCookiesMiddleware
-from .mongodb import MongoDBPipeline
+from ._useragent import UserAgentMiddleware
+from ._markdown import MarkdownPipeline
+from ._cookies import FirefoxCookiesMiddleware
+from ._mongodb import MongoDBPipeline
 from ._redis import RedisDupeFilter
