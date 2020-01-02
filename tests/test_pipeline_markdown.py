@@ -9,8 +9,8 @@ from scrapy.utils.test import get_crawler
 from scrapyu import MarkdownPipeline
 
 
-html = Path('normal.html').read_text()
-text = Path('normal.md').read_text()
+html = Path('./normal.html').read_text()
+text = Path('./normal.md').read_text()
     
 
 def test_html2text():
