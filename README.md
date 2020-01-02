@@ -50,8 +50,16 @@ DOWNLOADER_MIDDLEWARES = {
 
 ```python
 MONGODB_URI = 'mongodb://localhost:27017'
+# or
+# MONGODB_HOST = 'localhost'
+# MONGODB_PORT = 27017
 MONGODB_DATABASE = 'scrapyu'
-MONGODB_COLLECTION = 'tests'
+MONGODB_COLLECTION = 'items'
+MONGODB_UNIQUE_KEY = 'title name'
+# or
+# MONGODB_UNIQUE_KEY = ['title', 'name']
+# MONGODB_UNIQUE_KEY = ('title', 'name')
 ITEM_PIPELINES = {
     'scrapyu.MongoDBPipeline': 300,
 }
+```
