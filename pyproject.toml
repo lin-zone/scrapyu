@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrapyu"
-version = "0.1.9"
+version = "0.1.10"
 description = "Scrapy utils"
 authors = [
     "lin-zone <z_one10@163.com>",

@@ -13,6 +13,7 @@ class RedisDupeFilter(BaseDupeFilter):
         self.redis = Redis(host, port, db, password)
         self.key = key
         self.ignore_url = ignore_url
+        self.fingerprints = self.redis.smembers(key)
         self.logger = logging.getLogger('scrapyu.RedisDupeFilter')
 
     @classmethod
@@ -29,13 +30,16 @@ class RedisDupeFilter(BaseDupeFilter):
         if re_match(self.ignore_url, request.url):
             return False
         fp = request_fingerprint(request)
-        if self.redis.sismember(self.key, fp):
+        fp = bytes(fp, encoding='utf-8')
+        if fp in self.fingerprints:
             return True
         else:
-            self.redis.sadd(self.key, fp)
+            self.fingerprints.add(fp)
             return False
 
     def close(self, reason):
+        if self.fingerprints:
+            self.redis.sadd(self.key, *self.fingerprints)
         self.redis.close()
 
     def log(self, request, spider):
