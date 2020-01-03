@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrapyu"
-version = "0.1.7"
+version = "0.1.8"
 description = "Scrapy utils"
 authors = [
     "lin-zone <z_one10@163.com>",
@@ -31,6 +31,7 @@ path-py = "12.4.0"
 selenium = "3.141.0"
 pymongo = "3.10.0"
 redis = "3.3.11"
+testfixtures = "6.10.3"
 
 [tool.poetry.dev-dependencies]
 scrapy = "*"

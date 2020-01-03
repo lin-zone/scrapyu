@@ -8,3 +8,4 @@ path-py==12.4.0
 selenium==3.141.0
 pymongo==3.10.0
 redis==3.3.11
+testfixtures==6.10.3

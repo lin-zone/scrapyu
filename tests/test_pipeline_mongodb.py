@@ -88,3 +88,37 @@ def test_list_unique_key():
     assert find_items(pipe) == [item3, item4]
 
     drop_collection(pipe)
+
+
+def test_buffer():
+    pipe, spider = open_pipe(
+        MONGODB_UNIQUE_KEY='id',
+        MONGODB_BUFFER_LENGTH=3,
+        )
+
+    item1 = dict(id=1, name='one')
+    item2 = dict(id=2, name='two')
+    item3 = dict(id=1, name='two')
+    item4 = dict(id=2, name='one')
+
+    pipe.process_item(item1, spider)
+    assert pipe._item_buffer == [item1]
+    assert find_items(pipe) == []
+
+    pipe.process_item(item2, spider)
+    assert pipe._item_buffer == [item1, item2]
+    assert find_items(pipe) == []
+
+    pipe.process_item(item3, spider)
+    assert pipe._item_buffer == []
+    assert find_items(pipe) == [item1, item2, item3]
+
+    pipe.process_item(item4, spider)
+    assert pipe._item_buffer == [item4]
+    assert find_items(pipe) == [item1, item2, item3]
+
+    pipe.close_spider(spider)
+    assert pipe._item_buffer == []
+    assert find_items(pipe) == [item1, item2, item3, item4]
+
+    drop_collection(pipe)

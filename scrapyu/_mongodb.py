@@ -1,6 +1,7 @@
 import logging
 
 from pymongo import MongoClient
+from scrapy.exceptions import CloseSpider
 
 
 class MongoDBPipeline(object):
@@ -10,10 +11,11 @@ class MongoDBPipeline(object):
         'database': 'scrapyu',
         'collection': 'items',
         'unique_key': None,
+        'buffer_length': 0,
     }
 
     def open_spider(self, spider):
-        self.logger = logging.getLogger('mongodb-pipeline')
+        self.logger = logging.getLogger('scrapyu.MongoDBPipeline')
         self.configure(spider.settings)
         config = self.config
         self.connection = MongoClient(config['uri'])
@@ -23,22 +25,46 @@ class MongoDBPipeline(object):
             f"Connected to MongoDB {config['uri']}, "
             f"using {config['database']}.{config['collection']}"
         )
+        self.has_buffer = bool(config['buffer_length'])
+        if self.has_buffer:
+            self._item_buffer = []
+
+    def close_spider(self, spider):
+        if self.has_buffer and len(self._item_buffer):
+            self._commit_buffer()
+        self.connection.close()
 
     def process_item(self, item, spider):
-        unique_key = self.config['unique_key']
         item_dict = dict(item)
+        if self.has_buffer:
+            self.insert_buffer(item_dict)
+        else:
+            self.insert_one(item_dict)
+        return item
+
+    def _commit_buffer(self):
+        items = self._item_buffer.copy()
+        self.collection.insert_many(items)
+        self._item_buffer.clear()
+
+    def insert_buffer(self, item):
+        self._item_buffer.append(item)
+        if len(self._item_buffer) >= self.config['buffer_length']:
+            self._commit_buffer()
+
+    def insert_one(self, item):
+        unique_key = self.config['unique_key']
         if unique_key is None:
-            self.collection.insert_one(item_dict)
+            self.collection.insert_one(item)
         else:
             spec = {}
             try:
                 for k in unique_key:
                     spec[k] = item[k]
-                self.collection.update_one(spec, {'$set': item_dict}, upsert=True)
+                self.collection.update_one(spec, {'$set': item}, upsert=True)
             except KeyError as e:
                 msg = f"unique_key defined error, item has no {str(e)} field"
-                spider.crawler.engine.close_spider(spider, msg)
-        return item
+                CloseSpider(msg)
 
     def configure(self, settings):
         uri = settings.get('MONGODB_URI')
@@ -56,3 +82,4 @@ class MongoDBPipeline(object):
             else:
                 unique_key = list(unique_key)
         self.config['unique_key'] = unique_key
+        self.config['buffer_length'] = settings.get('MONGODB_BUFFER_LENGTH', 0)
