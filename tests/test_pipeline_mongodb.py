@@ -1,5 +1,7 @@
+import pytest
 from scrapy import Spider
 from scrapy.utils.test import get_crawler
+from scrapy.exceptions import CloseSpider
 
 from scrapyu import MongoDBPipeline
 
@@ -86,6 +88,20 @@ def test_list_unique_key():
 
     assert collection_length(pipe) == 2
     assert find_items(pipe) == [item3, item4]
+
+    drop_collection(pipe)
+    
+
+def test_error_unique_key():
+    pipe, spider = open_pipe(MONGODB_UNIQUE_KEY='id title')
+
+    item1 = dict(id=1, name='one')
+
+    with pytest.raises(CloseSpider):
+        pipe.process_item(item1, spider)
+
+    assert collection_length(pipe) == 0
+    assert find_items(pipe) == []
 
     drop_collection(pipe)
 

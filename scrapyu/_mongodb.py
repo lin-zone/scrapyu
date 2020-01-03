@@ -64,7 +64,7 @@ class MongoDBPipeline(object):
                 self.collection.update_one(spec, {'$set': item}, upsert=True)
             except KeyError as e:
                 msg = f"unique_key defined error, item has no {str(e)} field"
-                CloseSpider(msg)
+                raise CloseSpider(msg)
 
     def configure(self, settings):
         uri = settings.get('MONGODB_URI')
