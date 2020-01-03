@@ -56,7 +56,8 @@ MONGODB_URI = 'mongodb://localhost:27017'
 # MONGODB_PORT = 27017
 MONGODB_DATABASE = 'scrapyu'
 MONGODB_COLLECTION = 'items'
-MONGODB_UNIQUE_KEY = 'title name'
+MONGODB_BUFFER_LENGTH = 100
+MONGODB_UNIQUE_KEY = 'title name'       # use only if no buffer
 # or
 # MONGODB_UNIQUE_KEY = ['title', 'name']
 # MONGODB_UNIQUE_KEY = ('title', 'name')
