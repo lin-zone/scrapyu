@@ -18,7 +18,6 @@ def test_redis_filter():
     )
     dupefilter = RedisDupeFilter.from_settings(settings)
     dupefilter.open()
-    dupefilter.redis.delete(dupefilter.key)
 
     r1 = Request('http://scrapytest.org/1')
     r2 = Request('http://scrapytest.org/2')
@@ -30,6 +29,7 @@ def test_redis_filter():
     assert not dupefilter.request_seen(r2)
     assert dupefilter.request_seen(r3)
 
+    dupefilter.redis.delete(dupefilter.key)
     dupefilter.close('finished')
     
 
@@ -48,7 +48,6 @@ def test_redis_filter_log():
 
         dupefilter = RedisDupeFilter.from_settings(settings)
         dupefilter.open()
-        dupefilter.redis.delete(dupefilter.key)
 
         r1 = Request('http://scrapytest.org/index.html')
         r2 = Request('http://scrapytest.org/index.html',
@@ -66,4 +65,40 @@ def test_redis_filter_log():
             ('Filtered duplicate request: <GET http://scrapytest.org/index.html>'
             ' (referer: http://scrapytest.org/INDEX.html)')))
         
+        dupefilter.redis.delete(dupefilter.key)
         dupefilter.close('finished')
+
+
+def test_ignore_url():
+    settings = dict(
+        DUPEFILTER_CLASS='scrapyu.RedisDupeFilter',
+        REDIS_DUPE_HOST='localhost',
+        REDIS_DUPE_PORT=6379,
+        REDIS_DUPE_DATABASE=0,
+        REDIS_DUPE_PASSWORD=None,
+        REDIS_DUPE_KEY='test-scrapyu-requests',
+        REDIS_DUPE_IGNORE_URL=r'http://scrapytest.org/\d+'
+    )
+    dupefilter = RedisDupeFilter.from_settings(settings)
+    dupefilter.open()
+
+    r1 = Request('http://scrapytest.org/1')
+    r2 = Request('http://scrapytest.org/23')
+    r3 = Request('http://scrapytest.org/a')
+    r4 = Request('http://scrapytest.org/1a')
+
+    assert not dupefilter.request_seen(r1)
+    assert not dupefilter.request_seen(r1)
+
+    assert not dupefilter.request_seen(r2)
+    assert not dupefilter.request_seen(r2)
+
+    assert not dupefilter.request_seen(r3)
+    assert dupefilter.request_seen(r3)  
+  
+    assert not dupefilter.request_seen(r4)
+    assert dupefilter.request_seen(r4)
+
+    dupefilter.redis.delete(dupefilter.key)
+    dupefilter.close('finished')
+    

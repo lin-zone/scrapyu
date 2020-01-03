@@ -76,4 +76,5 @@ REDIS_DUPE_PORT = 6379
 REDIS_DUPE_DATABASE = 0
 REDIS_DUPE_PASSWORD = 'password'
 REDIS_DUPE_KEY = 'requests'
+REDIS_DUPE_IGNORE_URL = r'http://scrapytest.org/\d+'
 ```

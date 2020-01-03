@@ -1,3 +1,4 @@
+import re
 from urllib.parse import urlparse
 
 from selenium import webdriver
@@ -41,3 +42,15 @@ def get_firefox_cookies(url, convert_scrapy_cookies=True, **kwargs):
             cookies = _raw_cookies_to_scrapy_cookies(cookies)
         _cookies[key] = cookies
     return _cookies[key]
+
+
+def re_match(pattern, string):
+    if not isinstance(pattern, str):
+        return False
+    bound = r'\b'
+    if not pattern.startswith(bound):
+        pattern = bound + pattern
+    if not pattern.endswith(bound):
+        pattern += bound
+    compile_pattern = re.compile(pattern)
+    return bool(compile_pattern.match(string))

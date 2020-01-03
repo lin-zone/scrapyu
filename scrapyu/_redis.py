@@ -4,12 +4,15 @@ from redis import Redis
 from scrapy.dupefilters import BaseDupeFilter
 from scrapy.utils.request import referer_str, request_fingerprint
 
+from .utils import re_match
+
 
 class RedisDupeFilter(BaseDupeFilter):
 
-    def __init__(self, host, port, db, password, key):
+    def __init__(self, host, port, db, password, key, ignore_url):
         self.redis = Redis(host, port, db, password)
         self.key = key
+        self.ignore_url = ignore_url
         self.logger = logging.getLogger('scrapyu.RedisDupeFilter')
 
     @classmethod
@@ -19,13 +22,18 @@ class RedisDupeFilter(BaseDupeFilter):
         db = settings.get('REDIS_DUPE_DATABASE', 0)
         password = settings.get('REDIS_DUPE_PASSWORD')
         key = settings.get('REDIS_DUPE_KEY', 'requests')
-        return cls(host, port, db, password, key)
+        ignore_url = settings.get('REDIS_DUPE_IGNORE_URL')
+        return cls(host, port, db, password, key, ignore_url)
 
     def request_seen(self, request):
+        if re_match(self.ignore_url, request.url):
+            return False
         fp = request_fingerprint(request)
         if self.redis.sismember(self.key, fp):
             return True
-        self.redis.sadd(self.key, fp)
+        else:
+            self.redis.sadd(self.key, fp)
+            return False
 
     def close(self, reason):
         self.redis.close()
