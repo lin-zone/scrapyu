@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrapyu"
-version = "0.1.10"
+version = "0.1.11"
 description = "Scrapy utils"
 authors = [
     "lin-zone <z_one10@163.com>",
@@ -44,3 +44,6 @@ selenium = "*"
 pymongo = "*"
 redis = "*"
 testfixtures = "*"
+
+[tool.poetry.scripts]
+scrapyu = "scrapyu.cmdline:main"
