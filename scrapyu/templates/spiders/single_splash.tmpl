@@ -6,7 +6,7 @@ from scrapy_splash import SplashRequest
 
 class $classname(scrapy.Spider):
     name = '$name'
-    allowed_domains = ['http://$domain/']
+    allowed_domains = ['$domain/']
 
     def start_reqeusts(self):
         yield SplashRequest('http://$domain/')

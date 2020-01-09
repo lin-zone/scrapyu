@@ -78,3 +78,29 @@ REDIS_DUPE_PASSWORD = 'password'
 REDIS_DUPE_KEY = 'requests'
 REDIS_DUPE_IGNORE_URL = r'http://scrapytest.org/\d+'
 ```
+
+## genspider
+
+```bash
+scrapyu genspider -l
+```
+
+results in :
+
+```text
+Available templates:
+  single
+  single_splash
+```
+
+generate a single file spider
+
+```bash
+scrapyu genspider python www.python.org -t single
+```
+
+generate a single file spider, integration splash
+
+```bash
+scrapyu genspider python www.python.org -t single_splash
+```

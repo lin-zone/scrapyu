@@ -6,7 +6,7 @@ from scrapy_splash import SplashRequest
 
 class SingleSplashSpider(scrapy.Spider):
     name = 'single-splash'
-    allowed_domains = ['http://www.scrapytest.org/']
+    allowed_domains = ['www.scrapytest.org/']
 
     def start_reqeusts(self):
         yield SplashRequest('http://www.scrapytest.org/')
