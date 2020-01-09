@@ -13,7 +13,7 @@ args = (sys.executable, '-m', 'scrapyu.cmdline')
 def test_genspider_list():
     new_args = args + ('genspider', '-l')
     res = subprocess.check_output(new_args)
-    assert res == b'Available templates:\r\n  single\r\n  single_splash\r\n'
+    assert res.split() == [b'Available', b'templates:', b'single', b'single_splash']
 
 
 def test_single_template():
