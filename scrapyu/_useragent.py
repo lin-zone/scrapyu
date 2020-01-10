@@ -11,4 +11,4 @@ class UserAgentMiddleware(object):
 
     def process_request(self, request, spider):
         ua = getattr(self.ua, self.ua_type)
-        request.headers.setdefault('User-Agent', ua)
+        request.headers['User-Agent'] = ua
